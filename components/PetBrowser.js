@@ -20,11 +20,18 @@ class PetBrowser extends React.Component {
   //   );
   // }
 
+
   render() {
     var nameslist = []
-    this.props.pets.forEach((pet)=>{
-          nameslist.push(<div className="ui cards"><code> <Pet pet={pet} onAdoptPet/> </code></div>)
-        })
+    let self = this
+    self.props.pets.forEach((pet)=>{
+      if(self.props.adoptedPets.includes(pet.id)){
+        nameslist.push(<div className="ui cards"><code> <Pet pet={pet} isAdopted={true} onAdoptPet={this.props.onAdoptPet}/> </code></div>)
+      }else{
+        nameslist.push(<div className="ui cards"><code> <Pet pet={pet} isAdopted={false} onAdoptPet={this.props.onAdoptPet}/> </code></div>)
+      }
+
+    })
     return <div>{ nameslist }</div>
   }
 

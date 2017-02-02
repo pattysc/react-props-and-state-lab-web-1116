@@ -14,6 +14,33 @@ class App extends React.Component {
         type: 'all',
       }
     };
+    this.thing = this.thing.bind(this)
+  }
+
+  thing(event) {
+    this.setState({
+      filters: Object.assign({}, this.state.filters, {
+        type: event
+      })
+    })
+  }
+
+  adoption(id){
+    this.setState({
+      adoptedPets: [...this.state.adoptedPets, id]
+    })
+  }
+
+  fetching(){
+    let URL = `/api/pets`
+    if(this.state.filters.type === 'all'){
+      URL = `/api/pets`
+    }else{
+      URL = `/api/pets?type=${this.state.filters.type}`
+    }
+
+    fetch(URL)
+
   }
 
   render() {
@@ -25,10 +52,10 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters />
+              <Filters filters={this.state.filters} onChangeType={this.thing} onFindPetsClick={this.fetching.bind(this)}/>
             </div>
             <div className="twelve wide column">
-              <PetBrowser pets={this.state.pets} />
+              <PetBrowser pets={this.state.pets} onAdoptPet={this.adoption.bind(this)} adoptedPets={this.state.adoptedPets}/>
             </div>
           </div>
         </div>
